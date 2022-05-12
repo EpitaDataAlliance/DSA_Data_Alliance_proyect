@@ -1,4 +1,3 @@
-
 import pandas as pd
 import numpy as np
 import os
@@ -11,35 +10,31 @@ from sklearn.metrics import classification_report
 from sklearn.neighbors import KNeighborsClassifier
 
 
-ROOT_DIR = os.path.dirname(os.path.abspath(''))
-
+ROOT_DIR = os.path.dirname(os.path.abspath(""))
 
 
 def model_building(d_train: pd.DataFrame):
-    
+
     data_x_train, y_training = feature_engineering(d_train)
     model_training(data_x_train, y_training)
 
 
+def model_training(data_x_train: pd.DataFrame, y_training: pd.DataFrame):
 
-def model_training(
-    data_x_train: pd.DataFrame,
-    y_training: pd.DataFrame):
-
-    knn =  KNeighborsClassifier(n_neighbors = 10)
+    knn = KNeighborsClassifier(n_neighbors=10)
     knn.fit(data_x_train, y_training)
-    filename = os.path.join(ROOT_DIR + '/models', 'model.joblib')
+    filename = os.path.join(ROOT_DIR + "/models", "model.joblib")
     joblib.dump(knn, filename)
 
-def model_predictions(
-        data_x_train: pd.DataFrame, y_test: pd.DataFrame):
 
-    filename = os.path.join(ROOT_DIR + '/models', 'model.joblib')
+def model_predictions(data_x_train: pd.DataFrame, y_test: pd.DataFrame):
+
+    filename = os.path.join(ROOT_DIR + "/models", "model.joblib")
     model_load = joblib.load(filename)
 
     y_pred = model_load.predict(data_x_train)
 
-    return classification_report(y_test,y_pred)
+    return classification_report(y_test, y_pred)
 
 
 def model_evaluation(d_test: pd.DataFrame):
@@ -49,7 +44,6 @@ def model_evaluation(d_test: pd.DataFrame):
     model_performance = model_predictions(data_x_train, y_test)
 
     return model_performance
-
 
 
 def build_model(data: pd.DataFrame):
