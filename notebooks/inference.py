@@ -7,7 +7,6 @@ import joblib
 ROOT_DIR = os.path.dirname(os.path.abspath(''))
 
 
-
 def making_predictions_using_model(x_predict: pd.DataFrame):
     filename = os.path.join(ROOT_DIR + '/models', 'model.joblib')
 
