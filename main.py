@@ -62,9 +62,6 @@ st.title("Mobile Phone Price Prediction with ML")
 
 st.subheader("Choose a file or adjust the params by your needs")
 
-
-
-st.subheader("or Predict by adjusting the params")
 battery_power = st.slider("Battery Power", 501.0, 1998.0)
 clock_speed = st.slider("Clock Speed", 0.5, 3.0)
 fc = st.slider("Front Camera Resolution (MP)", 0.0, 19.0)
@@ -173,12 +170,13 @@ uploaded_file = st.file_uploader("Choose a file")
 if uploaded_file is not None:
     dataframe = pd.read_csv(uploaded_file)
     st.write(dataframe)
-    # dataframe to dict
-    dataframe_json = dataframe.to_dict("records")
-    st.write(dataframe_json)
-    res = requests.get("http://0.0.0.0:8080/predict", json=dataframe_json)
+    df_json = dataframe.to_json(orient='records', date_format='iso')
+    # st.write(dataframe_json)
+    res = requests.get("http://0.0.0.0:8080/predictdf", json=df_json)
+    st.write(res.json())
+    st.write(res.status_code)
     print(res.json())
-    st.info(res.json())
+    st.info(res)
 
 
 

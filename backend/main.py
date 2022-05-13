@@ -87,14 +87,16 @@ async def get_predictions_from_params(params: Item):
     return {"predictions": predictions}
 
 
-@app.get("/predictFile")
-def get_predictions_from_file(file: UploadFile = File(...)):
-    file_content = file.file.read()
-    print(file_content)
-    df_file = pd.read_csv(file_content)
-    df_file.columns = STYLES.keys()
+@app.post("/predictdf")
+async def get_predictions_from_df(params: List[Item]):
+    # read from file and convert to dataframe)
+    df = pd.DataFrame(params)
+    print(df)
+    df_json = df.to_json(orient='records', date_format='iso') 
+    # json to pandas df
+    df = pd.read_json(df_json)
     model = joblib.load(os.path.join(MODEL_PATH, "model.joblib"))
-    predictions = model.predict(df_file)
+    predictions = model.predict(df)
     predictions = predictions.tolist()
 
     return {"predictions": predictions}
