@@ -1,10 +1,21 @@
+from isort import file
+from nbformat import write
 import streamlit as st
 import requests
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import joblib
+import json
+# import StringIO
+from io import StringIO
 
+st.title("Mobile Phone Price Prediction with ML")
 
-# import data file csv
-# df = pd.read_csv('merc.csv')
-files = st.file_uploader(label="", accept_multiple_files=True, type="csv")
+# uploaded_file = st.file_uploader('', type=["csv"])
+# if uploaded_file is not None:
+#     df = pd.read_csv(uploaded_file)
+#     st.write(df)
 # if file:
 #     st.write(f'{file} is uploaded')
 #     # df = pd.read_csv(file.read())
@@ -13,11 +24,57 @@ files = st.file_uploader(label="", accept_multiple_files=True, type="csv")
 # set page title
 # st.set_page_config('Mercedes Price Prediction App')
 
+st.info("Choose a file or adjust the params by your needs")
+uploaded_file = st.file_uploader("Choose a file")
+if uploaded_file is not None:
+     # To read file as bytes:
+     bytes_data = uploaded_file.getvalue()
+     st.write(bytes_data)
 
-st.title("Mobile Phone Price Prediction")
+     # To convert to a string based IO:
+     stringio = StringIO(uploaded_file.getvalue().decode("utf-8"))
+     st.write(stringio)
 
-menu_list = ["Exploratory Data Analysis", "Predict Price"]
-menu = st.radio("Menu", menu_list)
+     # To read file as string:
+     string_data = stringio.read()
+     st.write(string_data)
+
+     # Can be used wherever a "file-like" object is accepted:
+     dataframe = pd.read_csv(uploaded_file)
+     st.write(dataframe)
+# menu_list = ["Exploratory Data Analysis", "Predict Price"]
+# menu = st.radio("Menu", menu_list)
+
+# if menu == "Exploratory Data Analysis":
+# st.subheader("Exploratory Data Analysis")
+# st.write("This is the Exploratory Data Analysis")
+
+# st.subheader("Data")
+# st.write(df.info())
+# st.write(df.describe())
+# st.write(df.head())
+# st.write(df.tail())
+# st.write(df.shape)
+
+# # st.subheader("Data Visualization")
+# # st.write("This is the Data Visualization")
+# # st.write(df.hist(bins=50, figsize=(20,15)))
+# # st.write(df.boxplot())
+# # st.write(df.corr())
+# # st.write(df.corr()['price'].sort_values(ascending=False))
+# # st.write(df.corr()['price'].sort_values(ascending=False)[:5])
+# # st.write(df.corr()['price'].sort_values(ascending=False)[-5:])
+
+# # seaborn stuff
+# st.subheader("Data Visualization (seaborn)")
+# st.write("This is the Data Visualization (seaborn)")
+# st.write(sns.pairplot(df))
+# st.write(sns.heatmap(df.corr(), annot=True))
+# st.pyplot()
+
+# # plotly stuff
+# st.write(py.iplot(df.iplot(kind='scatter', x='price', y='rating', size='size',
+#                           color='color', size_max=60)))
 
 battery_power = st.slider("Battery Power", 501.0, 1998.0)
 clock_speed = st.slider("Clock Speed", 0.5, 3.0)
@@ -71,18 +128,54 @@ if st.button("Predict"):
     if pred_json is not None:
         res = requests.get("http://0.0.0.0:8080/predict", json=pred_json)
         pred = res.json()
-        pred_price = pred['predictions'][0]
+        pred_price = pred["predictions"][0]
 
         if pred_price == 0:
-            estimation = 'VERY CHEAP'
+            estimation = "VERY CHEAP"
         elif pred_price == 1:
-            estimation = 'CHEAP'
+            estimation = "CHEAP"
         elif pred_price == 2:
-            estimation = 'EXPENSIVE'
+            estimation = "EXPENSIVE"
         else:
-            estimation = 'VERY EXPENSIVE'
+            estimation = "VERY EXPENSIVE"
 
         st.markdown("<h2 style='text-align: left;'> Prediction </h2>", unsafe_allow_html=True)
         st.success(f"The price of the phone would be {estimation}")
     else:
-            st.error("Something went wrong")
+        st.error("Something went wrong")
+
+
+# if st.button("Predict From File"):
+#     if uploaded_file is not None:
+#         res = requests.get(
+#             "http://0.0.0.0:8080/predictFile",
+#             json=pred_json,
+#             files={"file": open(uploaded_file, "rb")},
+#         )
+#         # st.write(res.json())
+#         st.write(res.json())
+#     else:
+#         st.warning("File not found")
+
+
+        # st.markdown("<h2 style='text-align: left;'> Prediction </h2>", unsafe_allow_html=True)
+        # st.success(f"The price of the phone would be {estimation}")
+
+# # upload the file and send it to the server then get the prediction
+# if st.button("Predict File"):
+#     if file is not None:
+#         file_name = file.filename
+#         file_data = file
+#         file_data = file_data.decode("utf-8")
+#         file_data = file_data.split("\n")
+#         file_data = file_data[:-1]
+#         file_data = [float(i) for i in file_data]
+#         file_data = np.array(file_data)
+#         file_data = file_data.reshape(1, -1)
+#         res = requests.get("http://0.0.0.0:8080/predictFile", json=pred_json, files={"file": file_data})
+#         st.write(res.json())
+#         st.write(res.status_code)
+#     else:
+#         st.error("Something went wrong")
+
+#     st.write(file)

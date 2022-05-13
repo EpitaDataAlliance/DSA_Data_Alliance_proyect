@@ -1,20 +1,19 @@
 import pandas as pd
-# from inference import make_predictions
 import os
 import joblib
+import json
+import uvicorn
+
 from typing import Optional
 from fastapi import FastAPI
 from fastapi import FastAPI, File, UploadFile
-# from pydantic import BaseModel
+
 from typing import List
 from fastapi.responses import HTMLResponse
-import uvicorn
 from fastapi import File
 from fastapi import FastAPI
 from fastapi import UploadFile
-import json
 from pydantic import BaseModel
-
 
 
 ROOT_DIR = os.path.dirname(os.path.abspath(""))
@@ -40,8 +39,9 @@ STYLES = {
     "talk_time": "talk_time",
     "three_g": "three_g",
     "touch_screen": "touch_screen",
-    "wifi": "wifi"
+    "wifi": "wifi",
 }
+
 
 class Item(BaseModel):
     battery_power: float
@@ -68,6 +68,7 @@ class Item(BaseModel):
 
 app = FastAPI()
 
+
 @app.get("/")
 def read_root():
     return {"message": "Hello from the other side"}
@@ -86,17 +87,16 @@ async def get_predictions_from_params(params: Item):
     return {"predictions": predictions}
 
 
-@app.post("/predictFile")
+@app.get("/predictFile")
 def get_predictions_from_file(file: UploadFile = File(...)):
     file_content = file.file.read()
-    file_content = file_content.decode("utf-8")
-    file_content = file_content.split("\n")
-    file_content = [x.split(",") for x in file_content]
-    file_content = pd.DataFrame(file_content)
-    file_content.columns = list(STYLES.values())
-    file_content = file_content.astype(float)
+    print(file_content)
+    df_file = pd.read_csv(file_content)
+    df_file.columns = STYLES.keys()
     model = joblib.load(os.path.join(MODEL_PATH, "model.joblib"))
-    predictions = model.predict(file_content)
+    predictions = model.predict(df_file)
+    predictions = predictions.tolist()
+
     return {"predictions": predictions}
 
 
