@@ -179,3 +179,10 @@ if uploaded_file is not None:
     res = requests.get("http://0.0.0.0:8080/predict", json=dataframe_json)
     print(res.json())
     st.info(res.json())
+
+
+
+#  can't find '__main__' module in 'backend'
+
+if __name__ == "__main__":
+    pass
