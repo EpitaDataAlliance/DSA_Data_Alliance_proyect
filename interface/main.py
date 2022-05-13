@@ -24,24 +24,8 @@ st.title("Mobile Phone Price Prediction with ML")
 # set page title
 # st.set_page_config('Mercedes Price Prediction App')
 
-st.info("Choose a file or adjust the params by your needs")
-uploaded_file = st.file_uploader("Choose a file")
-if uploaded_file is not None:
-     # To read file as bytes:
-     bytes_data = uploaded_file.getvalue()
-     st.write(bytes_data)
 
-     # To convert to a string based IO:
-     stringio = StringIO(uploaded_file.getvalue().decode("utf-8"))
-     st.write(stringio)
 
-     # To read file as string:
-     string_data = stringio.read()
-     st.write(string_data)
-
-     # Can be used wherever a "file-like" object is accepted:
-     dataframe = pd.read_csv(uploaded_file)
-     st.write(dataframe)
 # menu_list = ["Exploratory Data Analysis", "Predict Price"]
 # menu = st.radio("Menu", menu_list)
 
@@ -76,6 +60,20 @@ if uploaded_file is not None:
 # st.write(py.iplot(df.iplot(kind='scatter', x='price', y='rating', size='size',
 #                           color='color', size_max=60)))
 
+st.subheader("Choose a file or adjust the params by your needs")
+uploaded_file = st.file_uploader("Choose a file")
+if uploaded_file is not None:
+    # Can be used wherever a "file-like" object is accepted:
+    dataframe = pd.read_csv(uploaded_file)
+    st.write(dataframe)
+    pred_json = json.dumps(dataframe.to_dict(orient='records'))
+    res = requests.get("http://0.0.0.0:8080/predict", json=pred_json)
+    st.write(res.json())
+    # st.write(res.json()['predictions'])
+
+
+
+st.subheader("or Predict by adjusting the params")
 battery_power = st.slider("Battery Power", 501.0, 1998.0)
 clock_speed = st.slider("Clock Speed", 0.5, 3.0)
 fc = st.slider("Front Camera Resolution (MP)", 0.0, 19.0)
@@ -97,34 +95,33 @@ three_g = st.checkbox("3G")
 touch_screen = st.checkbox("Touch Screen")
 wifi = st.checkbox("WiFi")
 
-
-pred_json = {
-    "battery_power": battery_power,
-    "clock_speed": clock_speed,
-    "fc": fc,
-    "int_memory": int_memory,
-    "m_dep": m_dep,
-    "mobile_wt": mobile_wt,
-    "n_cores": n_cores,
-    "pc": pc,
-    "px_height": px_height,
-    "px_width": px_width,
-    "ram": ram,
-    "sc_h": sc_h,
-    "sc_w": sc_w,
-    "talk_time": talk_time,
-    "blue": blue,
-    "dual_sim": dual_sim,
-    "four_g": four_g,
-    "three_g": three_g,
-    "touch_screen": touch_screen,
-    "wifi": wifi,
-}
-
-for key, value in pred_json.items():
-    pred_json[key] = float(value)
-
 if st.button("Predict"):
+    pred_json = {
+        "battery_power": battery_power,
+        "clock_speed": clock_speed,
+        "fc": fc,
+        "int_memory": int_memory,
+        "m_dep": m_dep,
+        "mobile_wt": mobile_wt,
+        "n_cores": n_cores,
+        "pc": pc,
+        "px_height": px_height,
+        "px_width": px_width,
+        "ram": ram,
+        "sc_h": sc_h,
+        "sc_w": sc_w,
+        "talk_time": talk_time,
+        "blue": blue,
+        "dual_sim": dual_sim,
+        "four_g": four_g,
+        "three_g": three_g,
+        "touch_screen": touch_screen,
+        "wifi": wifi,
+    }
+
+    for key, value in pred_json.items():
+        pred_json[key] = float(value)
+
     if pred_json is not None:
         res = requests.get("http://0.0.0.0:8080/predict", json=pred_json)
         pred = res.json()
@@ -158,8 +155,8 @@ if st.button("Predict"):
 #         st.warning("File not found")
 
 
-        # st.markdown("<h2 style='text-align: left;'> Prediction </h2>", unsafe_allow_html=True)
-        # st.success(f"The price of the phone would be {estimation}")
+    # st.markdown("<h2 style='text-align: left;'> Prediction </h2>", unsafe_allow_html=True)
+    # st.success(f"The price of the phone would be {estimation}")
 
 # # upload the file and send it to the server then get the prediction
 # if st.button("Predict File"):
