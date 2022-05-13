@@ -74,16 +74,16 @@ def read_root():
 
 
 @app.get("/predict")
-def get_predictions_from_params(params: Item):
+async def get_predictions_from_params(params: Item):
     model = joblib.load(os.path.join(MODEL_PATH, "model.joblib"))
     row = pd.Series(params.dict().values())
     df = pd.DataFrame()
     df = df.append(row, ignore_index=True)
     df.columns = STYLES.keys()
-    prediction = model.predict(df)
-    prediction = prediction.tolist()
+    predictions = model.predict(df)
+    predictions = predictions.tolist()
 
-    return {"predictions": prediction}
+    return {"predictions": predictions}
 
 
 @app.post("/predictFile")
