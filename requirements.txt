@@ -72,6 +72,7 @@ pexpect==4.8.0
 pickleshare==0.7.5
 Pillow==9.1.0
 platformdirs==2.5.2
+plotly==5.8.0
 prometheus-client==0.13.1
 prompt-toolkit==3.0.28
 protobuf==3.20.1
@@ -98,6 +99,7 @@ QtPy==2.0.1
 requests==2.27.1
 scikit-learn==1.0.2
 scipy==1.8.0
+seaborn==0.11.2
 semver==2.13.0
 Send2Trash==1.8.0
 six==1.16.0
@@ -107,6 +109,7 @@ soupsieve==2.3.1
 stack-data==0.2.0
 starlette==0.19.1
 streamlit==1.9.0
+tenacity==8.0.1
 terminado==0.13.3
 testpath==0.6.0
 text-unidecode==1.3
