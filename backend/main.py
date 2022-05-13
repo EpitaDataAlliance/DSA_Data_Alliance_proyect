@@ -75,7 +75,7 @@ def read_root():
 
 
 @app.get("/predict")
-async def get_predictions_from_params(params: Item):
+def get_predictions_from_params(params: Item):
     model = joblib.load(os.path.join(MODEL_PATH, "model.joblib"))
     row = pd.Series(params.dict().values())
     df = pd.DataFrame()
@@ -87,19 +87,15 @@ async def get_predictions_from_params(params: Item):
     return {"predictions": predictions}
 
 
-@app.post("/predictdf")
-async def get_predictions_from_df(params: List[Item]):
-    # read from file and convert to dataframe)
-    df = pd.DataFrame(params)
-    print(df)
-    df_json = df.to_json(orient='records', date_format='iso') 
-    # json to pandas df
-    df = pd.read_json(df_json)
-    model = joblib.load(os.path.join(MODEL_PATH, "model.joblib"))
-    predictions = model.predict(df)
-    predictions = predictions.tolist()
+# @app.get("/predictdf")
+# def get_predictions_from_df(params: List[Item]):
+#     model = joblib.load(os.path.join(MODEL_PATH, "model.joblib"))
+#     df = pd.DataFrame(params)
+#     df.columns = STYLES.keys()
+#     predictions = model.predict(df)
+#     predictions = predictions.tolist()
 
-    return {"predictions": predictions}
+#     return {"predictions": predictions}
 
 
 if __name__ == "__main__":
