@@ -81,6 +81,7 @@ def get_predictions_from_params(params: Item):
     df = pd.DataFrame()
     df = df.append(row, ignore_index=True)
     df.columns = STYLES.keys()
+    print(df)
     predictions = model.predict(df)
     predictions = predictions.tolist()
 
