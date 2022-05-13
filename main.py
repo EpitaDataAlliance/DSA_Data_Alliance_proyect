@@ -61,15 +61,6 @@ st.title("Mobile Phone Price Prediction with ML")
 #                           color='color', size_max=60)))
 
 st.subheader("Choose a file or adjust the params by your needs")
-uploaded_file = st.file_uploader("Choose a file")
-if uploaded_file is not None:
-    # Can be used wherever a "file-like" object is accepted:
-    dataframe = pd.read_csv(uploaded_file)
-    st.write(dataframe)
-    pred_json = json.dumps(dataframe.to_dict(orient='records'))
-    res = requests.get("http://0.0.0.0:8080/predict", json=pred_json)
-    st.write(res.json())
-    # st.write(res.json()['predictions'])
 
 
 
@@ -176,3 +167,15 @@ if st.button("Predict"):
 #         st.error("Something went wrong")
 
 #     st.write(file)
+
+
+uploaded_file = st.file_uploader("Choose a file")
+if uploaded_file is not None:
+    dataframe = pd.read_csv(uploaded_file)
+    st.write(dataframe)
+    # dataframe to dict
+    dataframe_json = dataframe.to_dict("records")
+    st.write(dataframe_json)
+    res = requests.get("http://0.0.0.0:8080/predict", json=dataframe_json)
+    print(res.json())
+    st.info(res.json())
