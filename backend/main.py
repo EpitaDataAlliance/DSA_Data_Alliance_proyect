@@ -104,4 +104,4 @@ def get_predictions_from_json(payload: JsonDfItem):
 
 
 if __name__ == "__main__":
-    uvicorn.run("main:app", host="0.0.0.0", port=8080)
+    uvicorn.run("main:app", host="0.0.0.0", port=5000, log_level="info")
