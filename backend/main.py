@@ -13,9 +13,10 @@ from fastapi import FastAPI
 from pydantic import BaseModel
 
 
-
 ROOT_DIR = os.path.dirname(os.path.abspath(""))
 MODEL_PATH = "../models"
+HOST = '0.0.0.0'
+PORT = 3000
 
 STYLES = {
     "battery_power": "battery_power",
@@ -104,4 +105,4 @@ def get_predictions_from_json(payload: JsonDfItem):
 
 
 if __name__ == "__main__":
-    uvicorn.run("main:app", host="0.0.0.0", port=5000, log_level="info")
+    uvicorn.run("main:app", host=HOST, port=PORT, log_level="info")
