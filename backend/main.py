@@ -16,7 +16,7 @@ from pydantic import BaseModel
 ROOT_DIR = os.path.dirname(os.path.abspath(""))
 MODEL_PATH = "../models"
 HOST = '0.0.0.0'
-PORT = 3000
+PORT = 35998
 
 STYLES = {
     "battery_power": "battery_power",

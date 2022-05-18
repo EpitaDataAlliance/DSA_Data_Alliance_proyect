@@ -104,7 +104,7 @@ if st.button("Predict"):
         pred_json[key] = float(value)
 
     if pred_json is not None:
-        res = requests.get("http://0.0.0.0:3000/predict", json=pred_json)
+        res = requests.get("http://0.0.0.0:35998/predict", json=pred_json)
         pred = res.json()
         pred_price = pred["predictions"][0]
 
@@ -164,7 +164,7 @@ if uploaded_file is not None:
     dataframe = pd.read_csv(uploaded_file, sep=",")
     df_json = dataframe.to_json(orient='records')
     payload = {"dataframe1": df_json}
-    res = requests.post("http://0.0.0.0:3000/predictjson", json=payload)
+    res = requests.post("http://0.0.0.0:35998/predictjson", json=payload)
     st.subheader("Predicted Array from File")
     st.success(res.json()['predictions'])
 
