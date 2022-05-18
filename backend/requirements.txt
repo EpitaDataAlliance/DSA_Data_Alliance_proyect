@@ -58,7 +58,6 @@ parso==0.8.3
 pexpect==4.8.0
 pickleshare==0.7.5
 Pillow==9.1.1
-pip-autoremove==0.10.0
 prometheus-client==0.14.1
 prompt-toolkit==3.0.29
 protobuf==3.20.1
@@ -78,8 +77,6 @@ pytz==2022.1
 pytz-deprecation-shim==0.1.0.post0
 pyzmq==22.3.0
 requests==2.27.1
-scikit-learn==1.0.2
-scipy==1.8.1
 semver==2.13.0
 Send2Trash==1.8.0
 six==1.16.0
@@ -90,7 +87,6 @@ stack-data==0.2.0
 starlette==0.19.1
 streamlit==1.9.0
 terminado==0.15.0
-threadpoolctl==3.1.0
 tinycss2==1.1.1
 toml==0.10.2
 toolz==0.11.2

@@ -1,15 +1,6 @@
-from isort import file
-from nbformat import write
 import streamlit as st
 import requests
 import pandas as pd
-import numpy as np
-import matplotlib.pyplot as plt
-import joblib
-import json
-# import StringIO
-from io import StringIO
-
 
 
 st.title("Mobile Phone Price Prediction with ML")
@@ -175,7 +166,7 @@ if uploaded_file is not None:
     payload = {"dataframe1": df_json}
     res = requests.post("http://0.0.0.0:8080/predictjson", json=payload)
     st.subheader("Predicted Array from File")
-    st.info(res.json()['predictions'])
+    st.success(res.json()['predictions'])
 
 
 if __name__ == "__main__":

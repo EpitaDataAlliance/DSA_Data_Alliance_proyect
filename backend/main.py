@@ -1,8 +1,6 @@
-from codecs import ignore_errors
 import pandas as pd
 import os
 import joblib
-import json
 import uvicorn
 
 from typing import Optional
@@ -12,16 +10,8 @@ from typing import List
 from fastapi.responses import HTMLResponse
 from fastapi import File
 from fastapi import FastAPI
-from fastapi import UploadFile
 from pydantic import BaseModel
-from fastapi.encoders import jsonable_encoder
-from io import StringIO
-from tempfile import NamedTemporaryFile
-import csv
-import logging
 
-
-logger = logging.getLogger(__name__)
 
 
 ROOT_DIR = os.path.dirname(os.path.abspath(""))
