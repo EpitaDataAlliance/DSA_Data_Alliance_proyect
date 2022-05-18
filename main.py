@@ -10,6 +10,8 @@ import json
 # import StringIO
 from io import StringIO
 
+
+
 st.title("Mobile Phone Price Prediction with ML")
 
 # uploaded_file = st.file_uploader('', type=["csv"])
@@ -168,19 +170,13 @@ if st.button("Predict"):
 
 uploaded_file = st.file_uploader("Choose a file")
 if uploaded_file is not None:
-    dataframe = pd.read_csv(uploaded_file)
-    st.write(dataframe)
-    df_json = dataframe.to_json(orient='records', date_format='iso')
-    # st.write(df_json)
-    res = requests.get("http://0.0.0.0:8080/predict", json=dict(df_json))
-    st.write(res.json())
-    st.write(res.status_code)
-    print(res.json())
-    st.info(res)
+    dataframe = pd.read_csv(uploaded_file, sep=",")
+    df_json = dataframe.to_json(orient='records')
+    payload = {"dataframe1": df_json}
+    res = requests.post("http://0.0.0.0:8080/predictjson", json=payload)
+    st.subheader("Predicted Array from File")
+    st.info(res.json()['predictions'])
 
-
-
-#  can't find '__main__' module in 'backend'
 
 if __name__ == "__main__":
     pass

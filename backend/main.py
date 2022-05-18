@@ -1,3 +1,4 @@
+from codecs import ignore_errors
 import pandas as pd
 import os
 import joblib
@@ -5,7 +6,6 @@ import json
 import uvicorn
 
 from typing import Optional
-from fastapi import FastAPI
 from fastapi import FastAPI, File, UploadFile
 
 from typing import List
@@ -14,6 +14,14 @@ from fastapi import File
 from fastapi import FastAPI
 from fastapi import UploadFile
 from pydantic import BaseModel
+from fastapi.encoders import jsonable_encoder
+from io import StringIO
+from tempfile import NamedTemporaryFile
+import csv
+import logging
+
+
+logger = logging.getLogger(__name__)
 
 
 ROOT_DIR = os.path.dirname(os.path.abspath(""))
@@ -66,6 +74,11 @@ class Item(BaseModel):
     wifi: float
 
 
+class JsonDfItem(BaseModel):
+    dataframe1: str
+    class Config:
+        arbitrary_types_allowed = True
+
 app = FastAPI()
 
 
@@ -81,22 +94,23 @@ def get_predictions_from_params(params: Item):
     df = pd.DataFrame()
     df = df.append(row, ignore_index=True)
     df.columns = STYLES.keys()
-    print(df)
     predictions = model.predict(df)
     predictions = predictions.tolist()
 
     return {"predictions": predictions}
 
 
-# @app.get("/predictdf")
-# def get_predictions_from_df(params: List[Item]):
-#     model = joblib.load(os.path.join(MODEL_PATH, "model.joblib"))
-#     df = pd.DataFrame(params)
-#     df.columns = STYLES.keys()
-#     predictions = model.predict(df)
-#     predictions = predictions.tolist()
 
-#     return {"predictions": predictions}
+@app.post("/predictjson")
+def get_predictions_from_json(payload: JsonDfItem):
+    model = joblib.load(os.path.join(MODEL_PATH, "model.joblib"))
+    # print(payload.dataframe1)
+    df = pd.read_json(payload.dataframe1)
+    df = df.drop(columns=["id"])
+    predictions = model.predict(df)
+    predictions = predictions.tolist()
+
+    return {"predictions": predictions}
 
 
 if __name__ == "__main__":
