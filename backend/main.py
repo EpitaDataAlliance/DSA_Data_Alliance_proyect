@@ -5,7 +5,6 @@ import uvicorn
 
 from fastapi import FastAPI
 from pydantic import BaseModel
-from backend.main import *
 
 
 ON_HEROKU = os.environ.get('ON_HEROKU')

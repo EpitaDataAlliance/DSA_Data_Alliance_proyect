@@ -3,13 +3,9 @@ import requests
 import pandas as pd
 import os
 
-from backend.main import *
-
 
 ON_HEROKU = os.environ.get('ON_HEROKU')
-# port = int(os.environ.get('PORT', 5000))
-
-backPort = port
+port = int(os.environ.get('PORT', 5000))
 
 st.title("Mobile Phone Price Prediction with ML")
 
@@ -113,7 +109,7 @@ if st.button("Predict"):
 
     if pred_json is not None:
         if ON_HEROKU:
-            res = requests.get(f"http://0.0.0.0:{backPort}/predict", json=pred_json)
+            res = requests.get(f"http://0.0.0.0:{port}/predict", json=pred_json)
         else:
             res = requests.get("http://0.0.0.0:5000/predict", json=pred_json)
 
@@ -179,7 +175,7 @@ if uploaded_file is not None:
     df_json = dataframe.to_json(orient='records')
     payload = {"dataframe1": df_json}
     if ON_HEROKU:
-        res = requests.post(f"http://0.0.0.0:{backPort}/predictjson", json=payload)
+        res = requests.post(f"http://0.0.0.0:{port}/predictjson", json=payload)
     else:
         res = requests.post("http://0.0.0.0:5000/predictjson", json=payload)
     st.subheader("Predicted Array from File")
