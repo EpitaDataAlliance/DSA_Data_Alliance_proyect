@@ -12,16 +12,13 @@ from fastapi import File
 from fastapi import FastAPI
 from pydantic import BaseModel
 
-# import socket
+from main import ON_HEROKU
 
 
-# hostname = socket.gethostname()
 
 ROOT_DIR = os.path.dirname(os.path.abspath(""))
 MODEL_PATH = "../models"
-# HOST = '0.0.0.0'
-# HOST = hostname
-# PORT = 5000
+
 
 STYLES = {
     "battery_power": "battery_power",
@@ -107,6 +104,6 @@ def get_predictions_from_json(payload: JsonDfItem):
 
     return {"predictions": predictions}
 
-
-# if __name__ == "__main__":
-#     uvicorn.run("main:app", host=HOST, port=PORT, log_level="info")
+if not ON_HEROKU:
+    if __name__ == "__main__":
+        uvicorn.run("main:app", host='0.0.0.0', port=5000, log_level="info")
