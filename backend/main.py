@@ -16,7 +16,7 @@ from pydantic import BaseModel
 ROOT_DIR = os.path.dirname(os.path.abspath(""))
 MODEL_PATH = "../models"
 HOST = '0.0.0.0'
-PORT = 35998
+PORT = 5000
 
 STYLES = {
     "battery_power": "battery_power",
@@ -104,5 +104,5 @@ def get_predictions_from_json(payload: JsonDfItem):
     return {"predictions": predictions}
 
 
-if __name__ == "__main__":
-    uvicorn.run("main:app", host=HOST, port=PORT, log_level="info")
+# if __name__ == "__main__":
+#     uvicorn.run("main:app", host=HOST, port=PORT, log_level="info")
