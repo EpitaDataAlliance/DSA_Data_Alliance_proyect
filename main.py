@@ -113,7 +113,7 @@ if st.button("Predict"):
         else:
             res = requests.get("http://0.0.0.0:5000/predict", json=pred_json)
 
-        st.warning('requesting to ', res.url)
+        st.warning(f'requesting to : {res.url}')
 
         pred = res.json()
         pred_price = pred["predictions"][0]
