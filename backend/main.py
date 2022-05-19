@@ -12,16 +12,16 @@ from fastapi import File
 from fastapi import FastAPI
 from pydantic import BaseModel
 
-import socket
+# import socket
 
 
-hostname = socket.gethostname()
+# hostname = socket.gethostname()
 
 ROOT_DIR = os.path.dirname(os.path.abspath(""))
 MODEL_PATH = "../models"
 # HOST = '0.0.0.0'
-HOST = hostname
-PORT = 5000
+# HOST = hostname
+# PORT = 5000
 
 STYLES = {
     "battery_power": "battery_power",
@@ -94,7 +94,6 @@ def get_predictions_from_params(params: Item):
     predictions = predictions.tolist()
 
     return {"predictions": predictions}
-
 
 
 @app.post("/predictjson")
