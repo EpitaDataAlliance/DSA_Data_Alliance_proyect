@@ -4,7 +4,7 @@ services:
   fastapi:
     build: backend/
     ports:
-      - 5000:5000
+      - "5000:5000"
     networks:
       - deploy_network
     container_name: fastapi
@@ -14,7 +14,7 @@ services:
     depends_on:
       - fastapi
     ports:
-      - 8501:8501
+      - "8501:8501"
     networks:
       - deploy_network
     container_name: streamlit
