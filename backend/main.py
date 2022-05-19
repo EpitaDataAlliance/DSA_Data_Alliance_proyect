@@ -19,6 +19,7 @@ from main import ON_HEROKU
 ROOT_DIR = os.path.dirname(os.path.abspath(""))
 MODEL_PATH = "../models"
 
+port = int(os.environ.get('PORT', 17995))
 
 STYLES = {
     "battery_power": "battery_power",
@@ -104,6 +105,6 @@ def get_predictions_from_json(payload: JsonDfItem):
 
     return {"predictions": predictions}
 
-if not ON_HEROKU:
-    if __name__ == "__main__":
-        uvicorn.run("main:app", host='0.0.0.0', port=5000, log_level="info")
+# if not ON_HEROKU:
+if __name__ == "__main__":
+    uvicorn.run("main:app", host='0.0.0.0', port=port, log_level="info")
