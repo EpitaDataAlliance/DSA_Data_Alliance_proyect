@@ -12,10 +12,9 @@ from fastapi import File
 from fastapi import FastAPI
 from pydantic import BaseModel
 
-from main import ON_HEROKU
 
 
-
+ON_HEROKU = os.environ.get('ON_HEROKU')
 ROOT_DIR = os.path.dirname(os.path.abspath(""))
 MODEL_PATH = "../models"
 
