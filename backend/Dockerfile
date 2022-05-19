@@ -1,13 +1,17 @@
 FROM python:3.8.13
 
-WORKDIR /app
+RUN mkdir /backend
 
-RUN apt-get update
-RUN apt-get install -y python3-pip
-RUN pip3 install -r ../requirements.txt
+COPY requirements.txt /backend
 
-COPY . .
+WORKDIR /backend
 
-EXPOSE 8080
+RUN /usr/local/bin/python -m pip install --upgrade pip && /usr/local/bin/python -m pip install -r requirements.txt
+
+COPY . /backend/
+
+COPY ../models /models/
+
+EXPOSE 5000
 
 CMD ["python", "main.py"]

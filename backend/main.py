@@ -3,12 +3,6 @@ import os
 import joblib
 import uvicorn
 
-from typing import Optional
-from fastapi import FastAPI, File, UploadFile
-
-from typing import List
-from fastapi.responses import HTMLResponse
-from fastapi import File
 from fastapi import FastAPI
 from pydantic import BaseModel
 
@@ -16,7 +10,7 @@ from pydantic import BaseModel
 ROOT_DIR = os.path.dirname(os.path.abspath(""))
 MODEL_PATH = "../models"
 HOST = '0.0.0.0'
-PORT = 35998
+PORT = 5000
 
 STYLES = {
     "battery_power": "battery_power",
