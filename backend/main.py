@@ -12,10 +12,15 @@ from fastapi import File
 from fastapi import FastAPI
 from pydantic import BaseModel
 
+import socket
+
+
+hostname = socket.gethostname()
 
 ROOT_DIR = os.path.dirname(os.path.abspath(""))
 MODEL_PATH = "../models"
-HOST = '0.0.0.0'
+# HOST = '0.0.0.0'
+HOST = hostname
 PORT = 5000
 
 STYLES = {
