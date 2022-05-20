@@ -1,7 +1,11 @@
 import streamlit as st
 import requests
 import pandas as pd
+import os
 
+
+ON_HEROKU = os.environ.get('ON_HEROKU')
+port = int(os.environ.get('PORT', 5000))
 
 st.title("Mobile Phone Price Prediction with ML")
 
@@ -104,7 +108,17 @@ if st.button("Predict"):
         pred_json[key] = float(value)
 
     if pred_json is not None:
+<<<<<<< HEAD
         res = requests.get("http://0.0.0.0:5000/predict", json=pred_json)
+=======
+        if ON_HEROKU:
+            res = requests.get(f"http://0.0.0.0:{port}/predict", json=pred_json)
+        else:
+            res = requests.get("http://0.0.0.0:5000/predict", json=pred_json)
+
+        st.warning(f'requesting to : {res.url}')
+
+>>>>>>> main
         pred = res.json()
         pred_price = pred["predictions"][0]
 
@@ -164,7 +178,14 @@ if uploaded_file is not None:
     dataframe = pd.read_csv(uploaded_file, sep=",")
     df_json = dataframe.to_json(orient='records')
     payload = {"dataframe1": df_json}
+<<<<<<< HEAD
     res = requests.post("http://0.0.0.0:5000/predictjson", json=payload)
+=======
+    if ON_HEROKU:
+        res = requests.post(f"http://0.0.0.0:{port}/predictjson", json=payload)
+    else:
+        res = requests.post("http://0.0.0.0:5000/predictjson", json=payload)
+>>>>>>> main
     st.subheader("Predicted Array from File")
     st.success(res.json()['predictions'])
 
