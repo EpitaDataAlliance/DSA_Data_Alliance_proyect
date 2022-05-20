@@ -10,8 +10,6 @@ RUN /usr/local/bin/python -m pip install --upgrade pip && /usr/local/bin/python 
 
 COPY . /backend/
 
-COPY ../models /models/
-
 EXPOSE 5000
 
 CMD ["python", "main.py"]
