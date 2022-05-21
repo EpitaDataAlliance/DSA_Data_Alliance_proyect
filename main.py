@@ -4,56 +4,10 @@ import pandas as pd
 
 st.set_page_config(layout='wide')
 st.title("Mobile Phone Price Prediction")
-
-# uploaded_file = st.file_uploader('', type=["csv"])
-# if uploaded_file is not None:
-#     df = pd.read_csv(uploaded_file)
-#     st.write(df)
-# if file:
-#     st.write(f'{file} is uploaded')
-#     # df = pd.read_csv(file.read())
-#     df = pd.read_csv(file)
-#     st.write(f'{df.info()}')
-# set page title
-# st.set_page_config('Mercedes Price Prediction App')
-
-
-
-# menu_list = ["Exploratory Data Analysis", "Predict Price"]
-# menu = st.radio("Menu", menu_list)
-
-# if menu == "Exploratory Data Analysis":
-# st.subheader("Exploratory Data Analysis")
-# st.write("This is the Exploratory Data Analysis")
-
-# st.subheader("Data")
-# st.write(df.info())
-# st.write(df.describe())
-# st.write(df.head())
-# st.write(df.tail())
-# st.write(df.shape)
-
-# # st.subheader("Data Visualization")
-# # st.write("This is the Data Visualization")
-# # st.write(df.hist(bins=50, figsize=(20,15)))
-# # st.write(df.boxplot())
-# # st.write(df.corr())
-# # st.write(df.corr()['price'].sort_values(ascending=False))
-# # st.write(df.corr()['price'].sort_values(ascending=False)[:5])
-# # st.write(df.corr()['price'].sort_values(ascending=False)[-5:])
-
-# # seaborn stuff
-# st.subheader("Data Visualization (seaborn)")
-# st.write("This is the Data Visualization (seaborn)")
-# st.write(sns.pairplot(df))
-# st.write(sns.heatmap(df.corr(), annot=True))
-# st.pyplot()
-
-# # plotly stuff
-# st.write(py.iplot(df.iplot(kind='scatter', x='price', y='rating', size='size',
-#                           color='color', size_max=60)))
-
 st.subheader("Choose a file or adjust the parameters in the sidebar")
+
+estimation = '...'
+font_color = 'gray'
 
 with st.sidebar:
 
@@ -122,61 +76,28 @@ with st.sidebar:
 
             if pred_json is not None:
                 res = requests.get("http://localhost:8501/predict", json=pred_json)
-                #print(res)
-                #pred = res.json()
-                #pred_price = pred["predictions"][0]
-                pred_price = 0
+                pred = res.json()
+                pred_price = pred["predictions"][0]
 
                 if pred_price == 0:
                     estimation = "VERY CHEAP"
+                    font_color = 'green'
                 elif pred_price == 1:
                     estimation = "CHEAP"
+                    font_color = 'yellow'
                 elif pred_price == 2:
                     estimation = "EXPENSIVE"
+                    font_color = 'orange'
                 else:
                     estimation = "VERY EXPENSIVE"
+                    font_color = 'red'
 
-                st.markdown("<h2 style='text-align: left;'> Prediction </h2>", unsafe_allow_html=True)
-                st.success(f"The price of the phone would be {estimation}")
+
             else:
                 st.error("Something went wrong")
 
-
-
-# if st.button("Predict From File"):
-#     if uploaded_file is not None:
-#         res = requests.get(
-#             "http://0.0.0.0:8080/predictFile",
-#             json=pred_json,
-#             files={"file": open(uploaded_file, "rb")},
-#         )
-#         # st.write(res.json())
-#         st.write(res.json())
-#     else:
-#         st.warning("File not found")
-
-
-    # st.markdown("<h2 style='text-align: left;'> Prediction </h2>", unsafe_allow_html=True)
-    # st.success(f"The price of the phone would be {estimation}")
-
-# # upload the file and send it to the server then get the prediction
-# if st.button("Predict File"):
-#     if file is not None:
-#         file_name = file.filename
-#         file_data = file
-#         file_data = file_data.decode("utf-8")
-#         file_data = file_data.split("\n")
-#         file_data = file_data[:-1]
-#         file_data = [float(i) for i in file_data]
-#         file_data = np.array(file_data)
-#         file_data = file_data.reshape(1, -1)
-#         res = requests.get("http://0.0.0.0:8080/predictFile", json=pred_json, files={"file": file_data})
-#         st.write(res.json())
-#         st.write(res.status_code)
-#     else:
-#         st.error("Something went wrong")
-
-#     st.write(file)
+st.markdown("<h4 style='text-align:left; color:gray'> Prediction </h4>", unsafe_allow_html=True)
+st.markdown(f"<p style='text-align:left; color:{font_color}'>The price of the phone would be {estimation} </p>", unsafe_allow_html=True)
 
 
 uploaded_file = st.file_uploader("Choose a file")
@@ -191,3 +112,35 @@ if uploaded_file is not None:
 
 if __name__ == "__main__":
     pass
+
+
+########################################TESTS############################################
+
+# st.write("This is the Exploratory Data Analysis")
+
+# st.subheader("Data")
+# st.write(df.info())
+# st.write(df.describe())
+# st.write(df.head())
+# st.write(df.tail())
+# st.write(df.shape)
+
+# # st.subheader("Data Visualization")
+# # st.write("This is the Data Visualization")
+# # st.write(df.hist(bins=50, figsize=(20,15)))
+# # st.write(df.boxplot())
+# # st.write(df.corr())
+# # st.write(df.corr()['price'].sort_values(ascending=False))
+# # st.write(df.corr()['price'].sort_values(ascending=False)[:5])
+# # st.write(df.corr()['price'].sort_values(ascending=False)[-5:])
+
+# # seaborn stuff
+# st.subheader("Data Visualization (seaborn)")
+# st.write("This is the Data Visualization (seaborn)")
+# st.write(sns.pairplot(df))
+# st.write(sns.heatmap(df.corr(), annot=True))
+# st.pyplot()
+
+# # plotly stuff
+# st.write(py.iplot(df.iplot(kind='scatter', x='price', y='rating', size='size',
+#                           color='color', size_max=60)))
