@@ -26,4 +26,3 @@ def make_predictions(input_data: pd.DataFrame) -> np.ndarray:
     y_pred = making_predictions_using_model(data_test)
 
     return y_pred
-# This is a new line that ends the file.
