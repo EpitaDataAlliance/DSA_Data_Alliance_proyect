@@ -4,14 +4,14 @@ import joblib
 import uvicorn
 
 from typing import Optional
-from fastapi import FastAPI, File, UploadFile
+from fastapi import FastAPI, File, UploadFile, status
 
 from typing import List
 from fastapi.responses import HTMLResponse
-from fastapi import File
-from fastapi import FastAPI
 from pydantic import BaseModel
 
+from database import SessionLocal
+import modules
 
 ROOT_DIR = os.path.dirname(os.path.abspath(""))
 MODEL_PATH = "../models"
@@ -63,7 +63,9 @@ class Item(BaseModel):
     three_g: float
     touch_screen: float
     wifi: float
-
+    
+    class Config:
+        orm_mode = True
 
 
 class JsonDfItem(BaseModel):
@@ -73,38 +75,34 @@ class JsonDfItem(BaseModel):
 
 app = FastAPI()
 
+db = SessionLocal()
 
+@app.get('/items', response_model=List[Item], status_code=200)
+def get_all_items():
+    items=db.quert(models.Item).all()
+    
+    return items
 
-@app.get("/")
-def read_root():
-    return {"message": "Hello from the other side"}
+@app.get('/item/{item_id}')
+def get_an_item(item_id:int):
+    pass
 
+@app.post('/items', response_model=Item, status_code=status.HTTP_201_CREATED)
+def create_an_item(item:Item):
+    new_item = models.Item(
+        desc = item.description,
+        price_range = item.price_range
+    )
 
-@app.get("/predict")
-def get_predictions_from_params(params: Item):
-    model = joblib.load(os.path.join(MODEL_PATH, "model.joblib"))
-    row = pd.Series(params.dict().values())
-    df = pd.DataFrame()
-    df = df.append(row, ignore_index=True)
-    df.columns = STYLES.keys()
-    predictions = model.predict(df)
-    predictions = predictions.tolist()
+    db.add(new_item)
+    db.commit()
+    
+    return new_item
+    
+@app.put('/item/{item_id}')
+def update_an_item(item_id:int):
+    pass
 
-    return {"predictions": predictions}
-
-
-
-@app.post("/predictjson")
-def get_predictions_from_json(payload: JsonDfItem):
-    model = joblib.load(os.path.join(MODEL_PATH, "model.joblib"))
-    # print(payload.dataframe1)
-    df = pd.read_json(payload.dataframe1)
-    df = df.drop(columns=["id"])
-    predictions = model.predict(df)
-    predictions = predictions.tolist()
-
-    return {"predictions": predictions}
-
-
-if __name__ == "__main__":
-    uvicorn.run("main:app", host=HOST, port=PORT, log_level="info")
+@app.delete('/item/{item_id}')
+def delete_item(item_id:int):
+    pass
