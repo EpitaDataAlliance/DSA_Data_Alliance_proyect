@@ -99,6 +99,6 @@ if uploaded_file is not None:
     st.subheader("Predicted prices from file")
     st.success(res.json()['predictions'])
 
-
+print("ok")
 if __name__ == "__main__":
     pass
