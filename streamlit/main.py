@@ -6,6 +6,9 @@ st.set_page_config(layout='wide')
 st.title("Mobile Phone Price Prediction")
 st.subheader("Choose a file or adjust the parameters in the sidebar")
 
+estimation = '...'
+font_color = 'gray'
+
 with st.sidebar:
 
     col1, col2 = st.columns(2)
@@ -21,7 +24,7 @@ with st.sidebar:
         four_g = st.checkbox("4G")
         blue = st.checkbox("Bluetooth")
         dual_sim = st.checkbox("Dual SIM")
-
+        
     with col2:
         three_g = st.checkbox("3G")
         touch_screen = st.checkbox("Touch Screen")
@@ -72,22 +75,29 @@ with st.sidebar:
                 pred_json[key] = float(value)
 
             if pred_json is not None:
-                res = requests.get("http://fastapi:5000/predict", json=pred_json)
-                pred_price = 0
+                res = requests.get("http://0.0.0.0:5000/predict", json=pred_json)
+                # res = requests.get("http://fastapi:5000/predict", json=pred_json) # for docker
+                pred = res.json()
+                pred_price = pred["predictions"][0]
 
                 if pred_price == 0:
                     estimation = "VERY CHEAP"
+                    font_color = 'green'
                 elif pred_price == 1:
                     estimation = "CHEAP"
+                    font_color = 'yellow'
                 elif pred_price == 2:
                     estimation = "EXPENSIVE"
+                    font_color = 'orange'
                 else:
                     estimation = "VERY EXPENSIVE"
+                    font_color = 'red'
 
-                st.markdown("<h2 style='text-align: left;'> Prediction </h2>", unsafe_allow_html=True)
-                st.success(f"The price of the phone would be {estimation}")
             else:
                 st.error("Something went wrong")
+
+st.markdown("<h3 style='text-align:left; color:gray'> Prediction </h4>", unsafe_allow_html=True)
+st.markdown(f"<h4 style='text-align:left; color:{font_color}'>The price of the phone would be {estimation} </h4>", unsafe_allow_html=True)
 
 
 uploaded_file = st.file_uploader("Choose a file")
@@ -99,6 +109,17 @@ if uploaded_file is not None:
     st.subheader("Predicted prices from file")
     st.success(res.json()['predictions'])
 
+<<<<<<< HEAD
 print("ok")
+=======
+
+# get the data from the database
+st.subheader("Predicted prices from database")
+res = requests.get("http://0.0.0.0:5000/predictions") # for local
+st.success(res.json())
+
+
+
+>>>>>>> 587a8366dd3fa5dcfddfa1900d71ff383f68832b
 if __name__ == "__main__":
     pass

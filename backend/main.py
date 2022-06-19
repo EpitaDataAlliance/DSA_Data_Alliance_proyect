@@ -1,16 +1,35 @@
+from datetime import datetime
 import pandas as pd
 import os
 import joblib
 import uvicorn
+import json
 
-from fastapi import FastAPI
+from fastapi import FastAPI, Depends, HTTPException
 from pydantic import BaseModel
+from typing import List
+from sqlalchemy.orm import Session
+
+from sql_app import crud, models, schemas
+from sql_app.database import SessionLocal, engine
 
 
 ROOT_DIR = os.path.dirname(os.path.abspath(""))
 MODEL_PATH = "./models"
 HOST = '0.0.0.0'
 PORT = 5000
+
+
+models.Base.metadata.create_all(bind=engine)
+
+# wake DB up
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
+
 
 STYLES = {
     "battery_power": "battery_power",
@@ -64,6 +83,7 @@ class JsonDfItem(BaseModel):
     class Config:
         arbitrary_types_allowed = True
 
+
 app = FastAPI()
 
 
@@ -73,7 +93,7 @@ def read_root():
 
 
 @app.get("/predict")
-def get_predictions_from_params(params: Item):
+def get_predictions_from_params(params: Item, db: Session = Depends(get_db)):
     model = joblib.load(os.path.join(MODEL_PATH, "model.joblib"))
     row = pd.Series(params.dict().values())
     df = pd.DataFrame()
@@ -82,20 +102,37 @@ def get_predictions_from_params(params: Item):
     predictions = model.predict(df)
     predictions = predictions.tolist()
 
+    db_dict = {
+        "prediction": predictions[0],
+        "datetime": datetime.now(),
+        "params": json.dumps(params.dict()),
+    }
+    # save to db
+    crud.create_prediction(db, prediction=db_dict)
+
     return {"predictions": predictions}
 
 
 @app.post("/predictjson")
 def get_predictions_from_json(payload: JsonDfItem):
     model = joblib.load(os.path.join(MODEL_PATH, "model.joblib"))
-    # print(payload.dataframe1)
     df = pd.read_json(payload.dataframe1)
     df = df.drop(columns=["id"])
     predictions = model.predict(df)
     predictions = predictions.tolist()
+    # here params need to be exported from csv and then should be saved asa in get_predictions_from_params
 
     return {"predictions": predictions}
 
-# if not ON_HEROKU:
+
+
+@app.get('/predictions/', response_model=List[schemas.Prediction])
+def read_predictions(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
+    predictions = crud.get_predictions(db, skip=skip, limit=limit)
+
+    return predictions
+
+
+
 if __name__ == "__main__":
     uvicorn.run("main:app", host='0.0.0.0', port=PORT, log_level="info")
