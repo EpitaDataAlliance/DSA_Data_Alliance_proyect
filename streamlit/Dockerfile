@@ -10,6 +10,8 @@ RUN /usr/local/bin/python -m pip install --upgrade pip && /usr/local/bin/python 
 
 COPY . /streamlit
 
+ENV ON_DOCKER Yes
+
 EXPOSE 8501
 
 CMD ["streamlit", "run", "main.py"]
