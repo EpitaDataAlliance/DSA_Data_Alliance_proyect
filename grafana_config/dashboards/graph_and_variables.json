@@ -1,276 +1,279 @@
 {
-    "annotations": {
-      "list": [
-        {
-          "builtIn": 1,
-          "datasource": {
-            "type": "grafana",
-            "uid": "-- Grafana --"
-          },
-          "enable": true,
-          "hide": true,
-          "iconColor": "rgba(0, 211, 255, 1)",
-          "name": "Annotations & Alerts",
-          "target": {
-            "limit": 100,
-            "matchAny": false,
-            "tags": [],
-            "type": "dashboard"
-          },
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "target": {
+          "limit": 100,
+          "matchAny": false,
+          "tags": [],
           "type": "dashboard"
-        }
-      ]
-    },
-    "editable": true,
-    "fiscalYearStartMonth": 0,
-    "graphTooltip": 0,
-    "id": 1,
-    "links": [],
-    "liveNow": false,
-    "panels": [
-      {
-        "datasource": {
-          "type": "frser-sqlite-datasource",
-          "uid": "BEfq0gqnz"
         },
-        "description": "0 -> Very Cheap\n1 -> Cheap\n2 -> Expensive\n3 -> Very Expensive",
-        "fieldConfig": {
-          "defaults": {
-            "color": {
-              "mode": "continuous-GrYlRd"
-            },
-            "custom": {
-              "axisGridShow": true,
-              "axisLabel": "0 -> Very Cheap | 1 -> Cheap | 2 -> Expensive | 3 -> Very Expensive",
-              "axisPlacement": "right",
-              "axisSoftMin": 0,
-              "fillOpacity": 85,
-              "gradientMode": "hue",
-              "hideFrom": {
-                "legend": false,
-                "tooltip": false,
-                "viz": false
-              },
-              "lineWidth": 2,
-              "scaleDistribution": {
-                "type": "linear"
-              }
-            },
-            "mappings": [],
-            "max": 3,
-            "min": 0,
-            "thresholds": {
-              "mode": "absolute",
-              "steps": [
-                {
-                  "color": "green"
-                },
-                {
-                  "color": "red",
-                  "value": 80
-                }
-              ]
-            },
-            "unit": "none"
-          },
-          "overrides": []
-        },
-        "gridPos": {
-          "h": 8,
-          "w": 24,
-          "x": 0,
-          "y": 0
-        },
-        "id": 5,
-        "options": {
-          "barRadius": 0,
-          "barWidth": 0.86,
-          "colorByField": "prediction",
-          "groupWidth": 0.7,
-          "legend": {
-            "calcs": [],
-            "displayMode": "list",
-            "placement": "right"
-          },
-          "orientation": "horizontal",
-          "showValue": "always",
-          "stacking": "none",
-          "text": {},
-          "tooltip": {
-            "mode": "single",
-            "sort": "none"
-          },
-          "xTickLabelRotation": 0,
-          "xTickLabelSpacing": 0
-        },
-        "targets": [
-          {
-            "datasource": {
-              "type": "frser-sqlite-datasource",
-              "uid": "BEfq0gqnz"
-            },
-            "queryText": "SELECT prediction, datetime FROM predictions;",
-            "queryType": "table",
-            "rawQueryText": "SELECT prediction, datetime FROM predictions;",
-            "refId": "A",
-            "timeColumns": [
-              "time",
-              "ts"
-            ]
-          }
-        ],
-        "title": "Predictions",
-        "type": "barchart"
-      },
-      {
-        "datasource": {
-          "type": "frser-sqlite-datasource",
-          "uid": "BEfq0gqnz"
-        },
-        "fieldConfig": {
-          "defaults": {
-            "mappings": [],
-            "max": 100,
-            "min": 0,
-            "thresholds": {
-              "mode": "percentage",
-              "steps": [
-                {
-                  "color": "green"
-                },
-                {
-                  "color": "red",
-                  "value": 80
-                }
-              ]
-            }
-          },
-          "overrides": []
-        },
-        "gridPos": {
-          "h": 6,
-          "w": 5,
-          "x": 0,
-          "y": 8
-        },
-        "id": 3,
-        "options": {
-          "orientation": "auto",
-          "reduceOptions": {
-            "calcs": [
-              "lastNotNull"
-            ],
-            "fields": "",
-            "values": false
-          },
-          "showThresholdLabels": false,
-          "showThresholdMarkers": true
-        },
-        "pluginVersion": "9.0.0",
-        "targets": [
-          {
-            "datasource": {
-              "type": "frser-sqlite-datasource",
-              "uid": "BEfq0gqnz"
-            },
-            "queryText": "SELECT count(prediction) FROM predictions;",
-            "queryType": "table",
-            "rawQueryText": "SELECT count(prediction) FROM predictions;",
-            "refId": "A",
-            "timeColumns": [
-              "time",
-              "ts"
-            ]
-          }
-        ],
-        "title": "Prediction Count",
-        "type": "gauge"
-      },
-      {
-        "datasource": {
-          "type": "frser-sqlite-datasource",
-          "uid": "BEfq0gqnz"
-        },
-        "fieldConfig": {
-          "defaults": {
-            "color": {
-              "mode": "thresholds"
-            },
-            "custom": {
-              "align": "auto",
-              "displayMode": "auto",
-              "inspect": false
-            },
-            "mappings": [],
-            "thresholds": {
-              "mode": "absolute",
-              "steps": [
-                {
-                  "color": "green"
-                },
-                {
-                  "color": "red",
-                  "value": 80
-                }
-              ]
-            }
-          },
-          "overrides": []
-        },
-        "gridPos": {
-          "h": 11,
-          "w": 24,
-          "x": 0,
-          "y": 14
-        },
-        "id": 1,
-        "options": {
-          "footer": {
-            "fields": "",
-            "reducer": [
-              "sum"
-            ],
-            "show": false
-          },
-          "showHeader": true
-        },
-        "pluginVersion": "9.0.0",
-        "targets": [
-          {
-            "datasource": {
-              "type": "frser-sqlite-datasource",
-              "uid": "BEfq0gqnz"
-            },
-            "key": "Q-e10c6193-a544-43ed-b8b7-f08e01b9dde2-0",
-            "queryText": "SELECT id, prediction, datetime FROM predictions;\n",
-            "queryType": "table",
-            "rawQueryText": "SELECT id, prediction, datetime FROM predictions;\n",
-            "refId": "A",
-            "timeColumns": [
-              "time",
-              "ts"
-            ]
-          }
-        ],
-        "title": "Detailed Predictions Table",
-        "type": "table"
+        "type": "dashboard"
       }
-    ],
-    "refresh": "",
-    "schemaVersion": 36,
-    "style": "dark",
-    "tags": [],
-    "templating": {
-      "list": []
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": 1,
+  "links": [],
+  "liveNow": false,
+  "panels": [
+    {
+      "datasource": {
+        "type": "frser-sqlite-datasource",
+        "uid": "P0CD8666848BF286D"
+      },
+      "description": "0 -> Very Cheap\n1 -> Cheap\n2 -> Expensive\n3 -> Very Expensive",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "continuous-GrYlRd"
+          },
+          "custom": {
+            "axisGridShow": true,
+            "axisLabel": "0 -> Very Cheap | 1 -> Cheap | 2 -> Expensive | 3 -> Very Expensive",
+            "axisPlacement": "right",
+            "axisSoftMin": 0,
+            "fillOpacity": 85,
+            "gradientMode": "hue",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineWidth": 2,
+            "scaleDistribution": {
+              "type": "linear"
+            }
+          },
+          "mappings": [],
+          "max": 3,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 5,
+      "options": {
+        "barRadius": 0,
+        "barWidth": 0.86,
+        "colorByField": "prediction",
+        "groupWidth": 0.7,
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "right"
+        },
+        "orientation": "horizontal",
+        "showValue": "always",
+        "stacking": "none",
+        "text": {},
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        },
+        "xTickLabelRotation": 0,
+        "xTickLabelSpacing": 0
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "frser-sqlite-datasource",
+            "uid": "BEfq0gqnz"
+          },
+          "queryText": "SELECT prediction, datetime FROM predictions;",
+          "queryType": "table",
+          "rawQueryText": "SELECT prediction, datetime FROM predictions;",
+          "refId": "A",
+          "timeColumns": [
+            "time",
+            "ts"
+          ]
+        }
+      ],
+      "title": "Predictions",
+      "type": "barchart"
     },
-    "time": {
-      "from": "now-6h",
-      "to": "now"
+    {
+      "datasource": {
+        "type": "frser-sqlite-datasource",
+        "uid": "P0CD8666848BF286D"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [],
+          "max": 100,
+          "min": 0,
+          "thresholds": {
+            "mode": "percentage",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 5,
+        "x": 0,
+        "y": 8
+      },
+      "id": 3,
+      "options": {
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true
+      },
+      "pluginVersion": "9.0.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "frser-sqlite-datasource",
+            "uid": "BEfq0gqnz"
+          },
+          "queryText": "SELECT count(prediction) FROM predictions;",
+          "queryType": "table",
+          "rawQueryText": "SELECT count(prediction) FROM predictions;",
+          "refId": "A",
+          "timeColumns": [
+            "time",
+            "ts"
+          ]
+        }
+      ],
+      "title": "Prediction Count",
+      "type": "gauge"
     },
-    "timepicker": {},
-    "timezone": "",
-    "title": "Prediction App Metrics",
-    "uid": "c5D5JR3nz",
-    "version": 11,
-    "weekStart": ""
-  }
+    {
+      "datasource": {
+        "type": "frser-sqlite-datasource",
+        "uid": "P0CD8666848BF286D"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "displayMode": "auto",
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 11,
+        "w": 24,
+        "x": 0,
+        "y": 14
+      },
+      "id": 1,
+      "options": {
+        "footer": {
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true
+      },
+      "pluginVersion": "9.0.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "frser-sqlite-datasource",
+            "uid": "BEfq0gqnz"
+          },
+          "key": "Q-e10c6193-a544-43ed-b8b7-f08e01b9dde2-0",
+          "queryText": "SELECT id, prediction, datetime FROM predictions;\n",
+          "queryType": "table",
+          "rawQueryText": "SELECT id, prediction, datetime FROM predictions;\n",
+          "refId": "A",
+          "timeColumns": [
+            "time",
+            "ts"
+          ]
+        }
+      ],
+      "title": "Detailed Predictions Table",
+      "type": "table"
+    }
+  ],
+  "refresh": "",
+  "schemaVersion": 36,
+  "style": "dark",
+  "tags": [],
+  "templating": {
+    "list": []
+  },
+  "time": {
+    "from": "now-6h",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "",
+  "title": "Prediction App Metrics",
+  "uid": "c5D5JR3nz",
+  "version": 3,
+  "weekStart": ""
+}
