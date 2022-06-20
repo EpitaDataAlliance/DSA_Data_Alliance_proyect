@@ -1,18 +1,12 @@
 version: "3"
 
-# Persist data from Prometheus and Grafana with Docker volumes
-# volumes:
-#   prometheus_data: {}
-#   grafana_data: {}
-
-# Connect containers via the front-tier and back-tier network
-networks:
-  backend:
-
-# Container services
 services:
   fastapi:
     build: backend/
+    # volumes:
+    #   - backend:/app/backend
+    volumes:
+      - backend:/app/backend
     ports:
       - "5000:5000"
     networks:
@@ -28,48 +22,29 @@ services:
     networks:
       - deploy_network
     container_name: streamlit
-  # prometheus:
-  #   # Prometheus uses the latest image
-  #   image: prom/prometheus:latest
 
-  #   # Stores Prometheus data locally in the prometheus directory
-  #   volumes:
-  #     - ./prometheus/:/etc/prometheus/
-  #     - prometheus_data:/prometheus
+  grafana:
+    image: grafana/grafana
+    environment:
+      GF_INSTALL_PLUGINS: frser-sqlite-datasource
+    volumes:
+      # - './backend/sql_app.db:/app/data.db'
+      - backend:/app/backend
+      - './grafana_config/grafana.ini:/etc/grafana/grafana.ini'
+      - './grafana_config/datasource.yaml:/etc/grafana/provisioning/datasources/datasource.yaml'
+      - './grafana_config/dashboard.yaml:/etc/grafana/provisioning/dashboards/dashboard.yaml'
+      # - './grafana_config/dashboards/alert.json:/app/dashboards/alert.json'
+      - './grafana_config/dashboards/graph_and_variables.json:/app/dashboards/graph_and_variables.json'
+      # - './grafana_config/dashboards/query_and_repitition.json:/app/dashboards/query_and_repitition.json'
+    ports:
+      - 3000:3000
+    container_name: grafana
+    depends_on:
+      - streamlit
 
-  #   # Setup commands for Prometheus
-  #   command:
-  #     - '--config.file=/etc/prometheus/prometheus.yml'
-  #     - '--storage.tsdb.path=/prometheus'
-  #     - '--web.console.libraries=/usr/share/prometheus/console_libraries'
-  #     - '--web.console.templates=/usr/share/prometheus/consoles'
+volumes:
+  backend:
 
-  #   # Exposes port 9090 to access Prometheus web UI
-  #   ports:
-  #     - 9090:9090
-
-  #   # Connects Prometheus service to the back-tier network
-  #   networks:
-  #     - backend
-
-  #   # Restart policy for Prometheus service set to always
-  #   restart: always
-
-  # grafana:
-  #   # Grafana uses the latest image
-  #   image: grafana/grafana:latest
-
-  #   # Sets user ID to 472
-  #   user: "472"
-  #   depends_on:
-  #     - prometheus
-  #   ports:
-  #     - 3000:3000
-  #   volumes:
-  #     - grafana_data:/var/lib/grafana
-  #     - ./grafana/provisioning/:/etc/grafana/provisioning/
-  #   env_file:
-  #     - ./grafana/grafana.config
-  #   networks:
-  #     - backend
-  #   restart: always
+networks:
+  deploy_network:
+    driver: bridge

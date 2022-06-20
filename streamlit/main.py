@@ -75,8 +75,8 @@ with st.sidebar:
                 pred_json[key] = float(value)
 
             if pred_json is not None:
-                res = requests.get("http://0.0.0.0:5000/predict", json=pred_json)
-                # res = requests.get("http://fastapi:5000/predict", json=pred_json) # for docker
+                # res = requests.get("http://0.0.0.0:5000/predict", json=pred_json)
+                res = requests.get("http://fastapi:5000/predict", json=pred_json) # for docker
                 pred = res.json()
                 pred_price = pred["predictions"][0]
 
@@ -112,7 +112,7 @@ if uploaded_file is not None:
 
 # get the data from the database
 st.subheader("Predicted prices from database")
-res = requests.get("http://0.0.0.0:5000/predictions") # for local
+res = requests.get("http://fastapi:5000/predictions") # for local
 st.success(res.json())
 
 
