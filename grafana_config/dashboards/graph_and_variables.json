@@ -24,7 +24,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 1,
+  "id": 2,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -110,9 +110,9 @@
             "type": "frser-sqlite-datasource",
             "uid": "BEfq0gqnz"
           },
-          "queryText": "SELECT prediction, datetime FROM predictions;",
+          "queryText": "SELECT prediction, datetime FROM predictions\norder by datetime;",
           "queryType": "table",
-          "rawQueryText": "SELECT prediction, datetime FROM predictions;",
+          "rawQueryText": "SELECT prediction, datetime FROM predictions\norder by datetime;",
           "refId": "A",
           "timeColumns": [
             "time",
@@ -274,6 +274,6 @@
   "timezone": "",
   "title": "Prediction App Metrics",
   "uid": "c5D5JR3nz",
-  "version": 3,
+  "version": 2,
   "weekStart": ""
 }

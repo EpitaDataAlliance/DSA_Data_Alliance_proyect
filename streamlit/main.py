@@ -1,6 +1,9 @@
 import streamlit as st
 import requests
 import pandas as pd
+import os
+
+ON_DOCKER = os.environ.get('ON_DOCKER', False)
 
 st.set_page_config(layout='wide')
 st.title("Mobile Phone Price Prediction")
@@ -75,8 +78,10 @@ with st.sidebar:
                 pred_json[key] = float(value)
 
             if pred_json is not None:
-                # res = requests.get("http://0.0.0.0:5000/predict", json=pred_json)
-                res = requests.get("http://fastapi:5000/predict", json=pred_json) # for docker
+                if ON_DOCKER:
+                    res = requests.get("http://fastapi:5000/predict", json=pred_json) # for docker
+                else:
+                    res = requests.get("http://0.0.0.0:5000/predict", json=pred_json)
                 pred = res.json()
                 pred_price = pred["predictions"][0]
 
@@ -105,14 +110,22 @@ if uploaded_file is not None:
     dataframe = pd.read_csv(uploaded_file, sep=",")
     df_json = dataframe.to_json(orient='records')
     payload = {"dataframe1": df_json}
-    res = requests.post("http://fastapi:5000/predictjson", json=payload)
+    st.write(payload)
+    if ON_DOCKER:
+        res = requests.post("http://fastapi:5000/predictjson", json=payload)
+    else:
+        res = requests.post("http://0.0.0.0:5000/predictjson", json=payload)
     st.subheader("Predicted prices from file")
     st.success(res.json()['predictions'])
+    st.write(pd.read_json(res.json()['dataframe'], orient='records'))
 
 
 # get the data from the database
 st.subheader("Predicted prices from database")
-res = requests.get("http://fastapi:5000/predictions") # for local
+if ON_DOCKER:
+    res = requests.get("http://fastapi:5000/predictions")
+else:
+    res = requests.get("http://0.0.0.0:5000/predictions")
 st.success(res.json())
 
 

@@ -10,6 +10,8 @@ RUN /usr/local/bin/python -m pip install --upgrade pip && /usr/local/bin/python 
 
 COPY . /backend/
 
+ENV ON_DOCKER Yes
+
 EXPOSE 5000
 
 CMD ["python", "main.py"]

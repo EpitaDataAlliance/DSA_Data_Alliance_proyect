@@ -8,6 +8,6 @@ class Prediction(Base):
     __tablename__ = 'predictions'
 
     id = Column(Integer, primary_key=True, index=True)
-    params = Column(String, index=True)
+    # params = Column(String, index=True)
     prediction = Column(Integer, index=True)
     datetime = Column(DateTime, index=True)
