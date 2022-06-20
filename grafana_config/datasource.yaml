@@ -6,7 +6,7 @@ datasources:
     isDefault: true
     editable: true
     jsonData:
-      path: /app/data.db
+      path: /app/backend/sql_app.db
   # - name: postgres
   #   type: postgres
   #   access: proxy
