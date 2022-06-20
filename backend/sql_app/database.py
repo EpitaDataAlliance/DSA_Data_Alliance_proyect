@@ -2,9 +2,15 @@ from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
+import os
 
-# SQLALCHEMY_DATABASE_URL = 'sqlite:///./sql_app.db'
-SQLALCHEMY_DATABASE_URL = 'sqlite:////app/backend/sql_app.db' # for docker
+
+ON_DOCKER = os.environ.get('ON_DOCKER', False)
+
+if ON_DOCKER:
+    SQLALCHEMY_DATABASE_URL = 'sqlite:////app/backend/sql_app.db'
+else:
+    SQLALCHEMY_DATABASE_URL = 'sqlite:///./sql_app.db'
 
 engine = create_engine(SQLALCHEMY_DATABASE_URL, connect_args={"check_same_thread": False})
 

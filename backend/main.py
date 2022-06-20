@@ -105,7 +105,7 @@ def get_predictions_from_params(params: Item, db: Session = Depends(get_db)):
     db_dict = {
         "prediction": predictions[0],
         "datetime": datetime.now(),
-        "params": json.dumps(params.dict()),
+        # "params": json.dumps(params.dict()),
     }
     # save to db
     crud.create_prediction(db, prediction=db_dict)
@@ -114,16 +114,29 @@ def get_predictions_from_params(params: Item, db: Session = Depends(get_db)):
 
 
 @app.post("/predictjson")
-def get_predictions_from_json(payload: JsonDfItem):
+def get_predictions_from_json(payload: JsonDfItem, db: Session = Depends(get_db)):
     model = joblib.load(os.path.join(MODEL_PATH, "model.joblib"))
     df = pd.read_json(payload.dataframe1)
     df = df.drop(columns=["id"])
     predictions = model.predict(df)
     predictions = predictions.tolist()
-    # here params need to be exported from csv and then should be saved asa in get_predictions_from_params
 
-    return {"predictions": predictions}
+    # send back the df
+    predictions_series = pd.Series(predictions)
+    df['prediction'] = predictions_series
+    df_json = df.to_json(orient='records')
 
+    # save to db
+    for i in range(len(df)):
+        db_dict = {
+            "prediction": predictions[i],
+            "datetime": datetime.now(),
+            # "params": json.dumps(df.iloc[i].to_dict()),
+        }
+        
+        crud.create_prediction(db, prediction=db_dict)
+
+    return {"predictions": predictions, "dataframe": df_json}
 
 
 @app.get('/predictions/', response_model=List[schemas.Prediction])
