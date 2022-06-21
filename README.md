@@ -1,7 +1,7 @@
 # Mobile Price Prediction App built with Streamlit, Grafana, FastAPI, Airflow, and Docker
 
 
-### Follow the below commands to run the app
+### Follow the Commands below to Run the Project
 
 `git clone https://github.com/EpitaDataAlliance/DSA_Data_Alliance_proyect.git`
 
