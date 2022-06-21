@@ -18,4 +18,5 @@
 
 ### Demo Version 
 
-A running version of the project can be found at `http://35.78.183.136:<app_port>` except Airflow since the Cloud Server does not have enough resources to run it
+A running version of the project can be found at http://35.78.183.136:<app_port> 
+except the Airflow part since the Cloud Server does not have enough resources to run it
