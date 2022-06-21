@@ -105,7 +105,10 @@ def get_predictions_from_params(params: Item, db: Session = Depends(get_db)):
     db_dict = {
         "prediction": predictions[0],
         "datetime": datetime.now(),
-        # "params": json.dumps(params.dict()),
+        "numcores": params.n_cores,
+        "intmemory": params.int_memory,
+        "ram": params.ram,
+        "pc": params.pc
     }
     # save to db
     crud.create_prediction(db, prediction=db_dict)
@@ -131,9 +134,12 @@ def get_predictions_from_json(payload: JsonDfItem, db: Session = Depends(get_db)
         db_dict = {
             "prediction": predictions[i],
             "datetime": datetime.now(),
-            # "params": json.dumps(df.iloc[i].to_dict()),
+            "intmemory": df.iloc[i]['int_memory'],
+            "numcores": df.iloc[i]['n_cores'],
+            "pc": df.iloc[i]['pc'],
+            "ram": df.iloc[i]['ram']
         }
-        
+
         crud.create_prediction(db, prediction=db_dict)
 
     return {"predictions": predictions, "dataframe": df_json}

@@ -8,6 +8,10 @@ class PredictionBase(BaseModel):
     # params: str
     prediction: int
     datetime: datetime.datetime
+    numcores: int
+    intmemory: int
+    ram: int
+    pc: int
 
 
 class PredictionCreate(PredictionBase):
