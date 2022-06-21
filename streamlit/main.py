@@ -104,6 +104,17 @@ with st.sidebar:
 st.markdown("<h3 style='text-align:left; color:gray'> Prediction </h4>", unsafe_allow_html=True)
 st.markdown(f"<h4 style='text-align:left; color:{font_color}'>The price of the phone would be {estimation} </h4>", unsafe_allow_html=True)
 
+def price_color(price):
+    if price == 'Very Expensive':
+        color = 'red'
+    elif price == 'Expensive':
+        color = 'orange'
+    elif price == 'Cheap':
+        color = 'yellow'
+    else:
+        color = 'green'
+
+    return f'color: {color}'
 
 uploaded_file = st.file_uploader("Choose a file")
 if uploaded_file is not None:
@@ -116,17 +127,21 @@ if uploaded_file is not None:
     else:
         res = requests.post("http://0.0.0.0:5000/predictjson", json=payload)
     st.subheader("Predicted prices from file")
-    st.success(res.json()['predictions'])
-    st.write(pd.read_json(res.json()['dataframe'], orient='records'))
+    final_df = pd.read_json(res.json()['dataframe'], orient='records')
+    final_df.loc[final_df['prediction'] == 0, 'prediction'] = 'Very Cheap'
+    final_df.loc[final_df['prediction'] == 1, 'prediction'] = 'Cheap'
+    final_df.loc[final_df['prediction'] == 2, 'prediction'] = 'Expensive'
+    final_df.loc[final_df['prediction'] == 3, 'prediction'] = 'Very Expensive'
+    st.dataframe(final_df.style.applymap(price_color, subset=['prediction']))
 
 
 # get the data from the database
-st.subheader("Predicted prices from database")
-if ON_DOCKER:
-    res = requests.get("http://fastapi:5000/predictions")
-else:
-    res = requests.get("http://0.0.0.0:5000/predictions")
-st.success(res.json())
+# st.subheader("Predicted prices from database")
+# if ON_DOCKER:
+#     res = requests.get("http://fastapi:5000/predictions")
+# else:
+#     res = requests.get("http://0.0.0.0:5000/predictions")
+# st.success(res.json())
 
 
 
