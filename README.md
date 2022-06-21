@@ -14,3 +14,8 @@
 - Airflow   -> http://0.0.0.0:8080 -> default user:pass -> airflow:airflow
 - Grafana   -> http://0.0.0.0:3000 -> default user:pass -> admin:admin123
 - FastAPI   -> http://0.0.0.0:5000
+
+
+### Demo Version 
+
+A running version of the project can be found at `http://35.78.183.136:<app_port>` except Airflow since the Cloud Server does not have enough resources to run it
