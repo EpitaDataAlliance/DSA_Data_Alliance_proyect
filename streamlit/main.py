@@ -110,7 +110,7 @@ if uploaded_file is not None:
     dataframe = pd.read_csv(uploaded_file, sep=",")
     df_json = dataframe.to_json(orient='records')
     payload = {"dataframe1": df_json}
-    st.write(payload)
+    # st.write(payload)
     if ON_DOCKER:
         res = requests.post("http://fastapi:5000/predictjson", json=payload)
     else:
