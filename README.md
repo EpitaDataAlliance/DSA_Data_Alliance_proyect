@@ -3,6 +3,10 @@
 
 ### Follow the below commands to run the app
 
+`git clone https://github.com/EpitaDataAlliance/DSA_Data_Alliance_proyect.git`
+
+`cd DSA_Data_Alliance_proyect`
+
 `docker-compose up airflow-init`
 
 `docker-compose up --build`
