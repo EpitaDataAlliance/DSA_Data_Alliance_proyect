@@ -11,6 +11,6 @@
 ### URLs of the Applications
 
 - Streamlit -> http://0.0.0.0:8501
-- Airflow   -> http://0.0.0.0:8080
-- Grafana   -> http://0.0.0.0:3000
+- Airflow   -> http://0.0.0.0:8080 -> default user:pass -> airflow:airflow
+- Grafana   -> http://0.0.0.0:3000 -> default user:pass -> admin:admin123
 - FastAPI   -> http://0.0.0.0:5000
